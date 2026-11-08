@@ -1,23 +1,14 @@
-import cv2 #OpenCV
-import os #взаимодействие с ОС
+import cv2
+import os
+
 
 def read_image(file_path):
-    # 1. Проверяем, существует ли файл физически на диске
-    if not os.path.exists(file_path): # проверяет, есть ли вообще такой файл по указанному пути
+    if not os.path.exists(file_path):
         raise FileNotFoundError(f"Ошибка: Файл '{file_path}' не найден в системе.")
     
-    # 2. Пытаемся декодировать файл в матрицу пикселей
-    img = cv2.imread(file_path) # читает картинку. функция загружает цветное 
-    # изображение в виде трехмерной матрицы NumPy, причем цветовые каналы располагаются 
-    # в порядке BGR (Синий-Зеленый-Красный)
-    
-    # 3. Проверяем, действительно ли это графический файл
+    img = cv2.imread(file_path)
+
     if img is None: 
         raise ValueError(f"Ошибка: Файл '{file_path}' поврежден или не является изображением.")
     
     return img
-
-#def save_image(img, output_path):
-    # Сохраняем матрицу пикселей обратно в графический файл
-    #cv2.imwrite(output_path, img) #берет уже обработанную матрицу img и путь сохранения output_path), 
-    #кодирует массив пикселей в нужный графический формат и сохраняет его

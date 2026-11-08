@@ -5,24 +5,10 @@ import cv2
 from image_processing import ImageFilter
 from utils import read_image
 
+
 logging.basicConfig(level=logging.INFO, format='[ %(levelname)s ] %(message)s')
 logger = logging.getLogger()
 
-def parse_params(param_str: str) -> dict:
-    params = {}
-    if not param_str:
-        return params
-
-    for item in param_str.split(','):
-        if '=' in item:
-            key, val = item.split('=', 1)
-            key = key.strip()
-            val = val.strip()
-            try:
-                params[key] = float(val)
-            except ValueError:
-                params[key] = val
-    return params
 
 def cli_argument_parser():
     parser = argparse.ArgumentParser()
@@ -35,20 +21,20 @@ def cli_argument_parser():
     parser.add_argument('-o', '--output',
                         help='output',
                         default = "result.png",
-                        type=str,
-                        required=True)
+                        type=str)
     parser.add_argument('-f', '--filter',
                         help='filter',
                         default = "grayscale",
                         type=str,
                         required=True)
-    parser.add_argument('-p', '--params',
-                        help='params',
-                        type=str,
-                        default="")
-    
-    args = parser.parse_args()
+    parser.add_argument('--scale', type=float, default=1.0)
+    parser.add_argument('--the_power_of_fading', type=float, default=0.25)
+    parser.add_argument('--oval_min_r', type=float, default=0.65)
+    parser.add_argument('--oval_max_r', type=float, default=1.0)
+    parser.add_argument('--threshold', type=float, default=40.0)
+    parser.add_argument('--texture', type=str, default=None)
 
+    args = parser.parse_args()
     return args
 
 
@@ -57,10 +43,7 @@ def main():
     try:
         image = read_image(args.image_path)
         
-        params_dict = args.__dict__.copy()
-        params_dict.update(parse_params(args.params))
-        
-        filter_processing = ImageFilter.get_filter(image, params_dict)
+        filter_processing = ImageFilter.get_filter(image, args.__dict__)
         result = filter_processing.apply_filter()
         cv2.imwrite(args.output, result)
     except Exception as ex:
