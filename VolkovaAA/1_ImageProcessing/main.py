@@ -32,7 +32,7 @@ def cli_argument_parser():
     parser.add_argument('--oval_min_r', type=float, default=0.65)
     parser.add_argument('--oval_max_r', type=float, default=1.0)
     parser.add_argument('--threshold', type=float, default=40.0)
-    parser.add_argument('--texture', type=str, default=None)
+    parser.add_argument('--texture', type=str, default=argparse.SUPPRESS)
 
     args = parser.parse_args()
     return args

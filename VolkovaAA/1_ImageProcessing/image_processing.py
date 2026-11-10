@@ -129,7 +129,7 @@ class FilmSimulation(ImageFilter):
         i_img = np.clip(i_channel, 0, 255).astype(np.uint8)
         i_img_3d = np.stack((i_img, i_img, i_img), axis=-1)
 
-        texture_path = self.params.get('texture') or ('textures/grain_texture.jpg')
+        texture_path = self.params.get('texture', 'textures/grain_texture.jpg')
         texture = cv2.imread(texture_path)
 
         if texture is None:
@@ -170,7 +170,7 @@ class OldPhotoNoise(ImageFilter):
         super().__init__(image, params)
 
     def apply_filter(self):
-        texture_path = self.params.get('texture') or ('textures/old_paper.jpg')
+        texture_path = self.params.get('texture', 'textures/old_paper.jpg')
         texture = cv2.imread(texture_path)
         if texture is None:
             raise ValueError(f"No texture")
